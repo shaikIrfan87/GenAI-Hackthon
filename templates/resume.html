@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ResumeMatch AI - Resume Upload</title>
+        <link href="https://fonts.googleapis.com" rel="preconnect" />
+        <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "primary": "#7f5af0", // neon purple
+                            "accent": "#ff5470", // coral
+                            "background-dark": "#18181b",
+                            "card-dark": "#23232b",
+                            "foreground-dark": "#f9fafb",
+                            "subtle-dark": "#9ca3af",
+                            "border-dark": "#2a2a32"
+                        },
+                        fontFamily: { "display": ["Montserrat", "Inter", "sans-serif"] },
+                        boxShadow: {
+                            'neon': '0 4px 24px 0 rgba(127,90,240,0.25)',
+                        },
+                        keyframes: {
+                            fadeIn: {
+                                '0%': { opacity: 0, transform: 'translateY(20px)' },
+                                '100%': { opacity: 1, transform: 'translateY(0)' },
+                            },
+                            scaleUp: {
+                                '0%': { transform: 'scale(0.95)' },
+                                '100%': { transform: 'scale(1)' },
+                            }
+                        },
+                        animation: {
+                            'fade-in': 'fadeIn 0.8s cubic-bezier(.4,0,.2,1) both',
+                            'scale-up': 'scaleUp 0.3s cubic-bezier(.4,0,.2,1) both',
+                        }
+                    },
+                },
+            }
+        </script>
+        <style>
+            body { font-family: 'Montserrat', 'Inter', sans-serif; }
+            .neon-border { box-shadow: 0 0 0 2px #7f5af0, 0 4px 24px 0 rgba(127,90,240,0.25); }
+            .card-animate { animation: fadeIn 0.8s cubic-bezier(.4,0,.2,1) both; }
+            .btn-ripple { position: relative; overflow: hidden; }
+            .btn-ripple:after { content: ''; display: block; position: absolute; border-radius: 50%; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; background: rgba(127,90,240,0.15); opacity: 0; transition: opacity 0.4s; }
+            .btn-ripple:active:after { opacity: 1; transition: 0s; }
+        </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+        <div class="flex flex-col min-h-screen bg-background-dark text-foreground-dark">
+            <header class="bg-background-dark border-b border-border-dark shadow-neon">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="flex h-16 items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <svg class="h-8 w-8 text-primary animate-pulse" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_6_319_new)">
+                                    <path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path>
+                                </g>
+                                <defs> <clipPath id="clip0_6_319_new"> <rect fill="white" height="48" width="48"></rect> </clipPath> </defs>
+                            </svg>
+                            <h1 class="text-2xl font-extrabold tracking-tight text-primary drop-shadow-lg animate-fade-in">ResumeMatch AI</h1>
+                        </div>
+                        <nav class="hidden md:flex items-center gap-8 text-base font-semibold">
+                            <a href="{{ url_for('dashboard') }}" class="text-subtle-dark hover:text-primary transition-colors">Dashboard</a>
+                            <a href="{{ url_for('jobs_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Jobs</a>
+                            <a href="{{ url_for('resumes_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Resumes</a>
+                            <a href="{{ url_for('letters_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Cover Letters</a>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <main class="flex-grow">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+                    <div class="mb-8 animate-fade-in">
+                        <h2 class="text-4xl font-extrabold tracking-tight text-primary mb-2">Automated Resume Relevance Evaluation</h2>
+                        <p class="text-lg text-subtle-dark">AI-powered analysis with 0-100 relevance scoring, gap identification, and automated shortlisting at 65% threshold.</p>
+                    </div>
+                    <div class="grid grid-cols-1 gap-8">
+                        <form id="uploadForm" class="card-animate neon-border bg-card-dark p-8 rounded-2xl shadow-neon border border-border-dark">
+                            <div class="mb-6">
+                                <label for="job-select" class="block text-base font-semibold text-subtle-dark mb-2">Select Job for Analysis</label>
+                                <select id="job-select" name="job_id" class="block w-full rounded-xl border-border-dark bg-background-dark py-2 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primary sm:text-base text-foreground-dark" required>
+                                 <option>Loading jobs...</option>
+                             </select>
+                        </div>
+
+                        <div class="text-center">
+                            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10"> <span class="material-symbols-outlined text-primary text-3xl">upload_file</span> </div>
+                            <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Drag and drop resumes here</h3>
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">or click to browse your files</p>
+                            <input type="file" id="resume-files" name="resumes" class="hidden" multiple accept=".pdf">
+                            <div class="mt-6">
+                                <button type="button" onclick="document.getElementById('resume-files').click()" class="inline-flex items-center gap-x-2 rounded bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+                                    <span class="material-symbols-outlined -ml-1">upload</span> Browse Resumes
+                                </button>
+                            </div>
+                            <div id="file-list" class="mt-4 text-sm text-gray-500 dark:text-gray-400"></div>
+                            <button type="submit" class="mt-6 inline-flex items-center gap-x-2 rounded-md bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                                Start Analysis
+                            </button>
+                            <div id="upload-status" class="mt-4 text-sm"></div>
+                        </div>
+                    </form>
+
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Resume Relevance Evaluation Results</h3>
+                        <div class="overflow-x-auto bg-white dark:bg-gray-900/50 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-800">
+                                <thead class="bg-gray-50 dark:bg-gray-800/50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Student</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Fit Verdict</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Relevance Score</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="results-table" class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Analysis Details Modal -->
+    <div id="analysisModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+        <div class="bg-card-dark neon-border rounded-2xl shadow-neon p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalTitle" class="text-2xl font-bold text-primary">Analysis Details</h3>
+                <button onclick="closeAnalysisModal()" class="text-accent text-2xl font-bold hover:text-accent/80">&times;</button>
+            </div>
+            <div id="modalContent" class="space-y-6">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const jobSelect = document.getElementById('job-select');
+            const uploadForm = document.getElementById('uploadForm');
+            const resumeFilesInput = document.getElementById('resume-files');
+            const fileList = document.getElementById('file-list');
+            const uploadStatus = document.getElementById('upload-status');
+            const resultsTable = document.getElementById('results-table');
+
+            // --- 1. Fetch and populate jobs in the dropdown ---
+            async function loadJobs() {
+                try {
+                    const response = await fetch('/api/jobs');
+                    const jobs = await response.json();
+                    jobSelect.innerHTML = '<option value="">-- Select a Job --</option>'; // Placeholder
+                    jobs.forEach(job => {
+                        jobSelect.innerHTML += `<option value="${job.id}">${job.title} at ${job.company}</option>`;
+                    });
+                } catch (error) {
+                    jobSelect.innerHTML = '<option>Could not load jobs</option>';
+                    console.error("Failed to load jobs:", error);
+                }
+            }
+
+            // --- 2. Fetch and display analysis results for the selected job ---
+            async function loadResults(jobId) {
+                if (!jobId) {
+                    resultsTable.innerHTML = '<tr><td colspan="5" class="text-center p-4 text-gray-500">Select a job to see results</td></tr>';
+                    return;
+                }
+                
+                // Show loading state
+                resultsTable.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center p-8">
+                            <div class="flex flex-col items-center">
+                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                                <p class="text-subtle-dark">Loading analysis results...</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                
+                console.log('Loading results for job ID:', jobId);
+                try {
+                    const response = await fetch(`/api/results/${jobId}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const candidates = await response.json();
+                    
+                    // Check if response is valid
+                    if (!Array.isArray(candidates)) {
+                        console.error('Invalid response format:', candidates);
+                        throw new Error('Invalid response format from server');
+                    }
+                    
+                    resultsTable.innerHTML = '';
+                    if (candidates.length === 0) {
+                        resultsTable.innerHTML = '<tr><td colspan="5" class="text-center p-4 text-gray-500">No candidates analyzed for this job yet.</td></tr>';
+                    }
+                    candidates.forEach(c => {
+                        const analysis = c.analysis || { verdict: 'Processing...', score: 0 };
+                        const score = analysis.score || 0;
+                        const isShortlisted = score >= 65;
+                        const scoreColor = score >= 75 ? 'text-green-500' : score >= 65 ? 'text-yellow-500' : 'text-red-500';
+                        const rowClass = isShortlisted ? 'bg-green-50 dark:bg-green-900/20' : '';
+                        
+                        resultsTable.innerHTML += `
+                        <tr class="${rowClass}">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">${c.name}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${analysis.verdict}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold ${scoreColor}">${score}/100</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                                    isShortlisted ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' : 
+                                    'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
+                                }">
+                                    ${isShortlisted ? '✓ Shortlisted' : '✗ Below Threshold'}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="px-3 py-1 bg-primary hover:bg-primary/80 text-white rounded-md transition-colors" onclick='showAnalysisModal(${JSON.stringify(analysis)}, "${c.name}")'>View Analysis</button>
+                            </td>
+                        </tr>`;
+                    });
+                } catch (error) {
+                    console.error("Failed to load results:", error);
+                    resultsTable.innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center p-8">
+                                <div class="text-red-400 mb-4">
+                                    <span class="material-symbols-outlined text-4xl mb-2">error</span>
+                                    <h4 class="text-lg font-semibold mb-2">Error Loading Results</h4>
+                                    <p class="text-sm mb-4">Failed to load analysis results. Please try again.</p>
+                                    <button onclick="loadResults(${jobId})" class="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-md transition-colors">
+                                        🔄 Retry
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+
+            // --- 3. Handle file upload ---
+            uploadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const jobId = jobSelect.value;
+                if (!jobId || resumeFilesInput.files.length === 0) {
+                    alert('Please select a job and at least one resume file.');
+                    return;
+                }
+                
+                uploadStatus.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                        <span>Uploading and analyzing resumes... This may take a moment.</span>
+                    </div>
+                `;
+                uploadStatus.className = 'mt-4 text-sm text-yellow-600';
+
+                try {
+                    const response = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        uploadStatus.textContent = result.message;
+                        uploadStatus.className = 'mt-4 text-sm text-green-600';
+                        // Refresh results after a short delay to allow processing
+                        setTimeout(() => loadResults(jobId), 3000);
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } catch (error) {
+                    uploadStatus.textContent = `Error: ${error.message}`;
+                    uploadStatus.className = 'mt-4 text-sm text-red-600';
+                }
+            });
+            
+            // Show selected file names
+            resumeFilesInput.addEventListener('change', function() {
+                fileList.innerHTML = Array.from(this.files).map(f => `<div>${f.name}</div>`).join('');
+            });
+            
+            // Event listener for job selection change
+            jobSelect.addEventListener('change', () => loadResults(jobSelect.value));
+
+            // --- Initial Load ---
+            loadJobs();
+            loadResults(null);
+        });
+
+        // Modal functions
+        function showAnalysisModal(analysis, candidateName) {
+            const modal = document.getElementById('analysisModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalTitle.textContent = `${candidateName} - Analysis Details`;
+            
+            let missing_skills = [];
+            try {
+                if (analysis.missing_skills) {
+                    if (typeof analysis.missing_skills === 'string') {
+                        missing_skills = JSON.parse(analysis.missing_skills);
+                    } else if (Array.isArray(analysis.missing_skills)) {
+                        missing_skills = analysis.missing_skills;
+                    }
+                }
+            } catch (e) {
+                console.error('Error parsing missing skills:', e);
+                missing_skills = [];
+            }
+            
+            modalContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="p-4 bg-background-dark rounded-lg">
+                            <h4 class="font-semibold text-primary mb-2">Score</h4>
+                            <div class="text-3xl font-bold ${
+                                analysis.score >= 75 ? 'text-green-400' : 
+                                analysis.score >= 50 ? 'text-yellow-400' : 'text-red-400'
+                            }">${analysis.score}/100</div>
+                        </div>
+                        <div class="p-4 bg-background-dark rounded-lg">
+                            <h4 class="font-semibold text-primary mb-2">Verdict</h4>
+                            <span class="px-3 py-1 rounded-full text-sm font-medium ${
+                                analysis.verdict === 'High' ? 'bg-green-900/50 text-green-300' :
+                                analysis.verdict === 'Medium' ? 'bg-yellow-900/50 text-yellow-300' :
+                                'bg-red-900/50 text-red-300'
+                            }">${analysis.verdict}</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-background-dark rounded-lg">
+                            <h4 class="font-semibold text-primary mb-2">Summary</h4>
+                            <p class="text-gray-300 text-sm">${analysis.summary || 'No summary available'}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 space-y-4">
+                    <div class="p-4 bg-background-dark rounded-lg">
+                        <h4 class="font-semibold text-primary mb-2">Personalized Feedback</h4>
+                        <p class="text-gray-300 text-sm">${analysis.feedback || 'No feedback available'}</p>
+                    </div>
+                    <div class="p-4 bg-background-dark rounded-lg">
+                        <h4 class="font-semibold text-primary mb-3">Missing Skills</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${missing_skills.length > 0 ? 
+                                missing_skills.map(skill => 
+                                    `<span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded-full">${skill}</span>`
+                                ).join('') : 
+                                '<span class="text-gray-400 text-sm">No missing skills identified</span>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeAnalysisModal() {
+            document.getElementById('analysisModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

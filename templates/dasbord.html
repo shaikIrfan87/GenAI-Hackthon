@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Montserrat:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#7f5af0", // neon purple
+                    "accent": "#ff5470", // coral
+                    "background-dark": "#18181b",
+                    "card-dark": "#23232b",
+                    "foreground-dark": "#f9fafb",
+                    "subtle-dark": "#9ca3af",
+                    "border-dark": "#2a2a32"
+                },
+                fontFamily: { "display": ["Montserrat", "Inter", "sans-serif"] },
+                boxShadow: {
+                    'neon': '0 4px 24px 0 rgba(127,90,240,0.25)',
+                },
+                keyframes: {
+                    fadeIn: {
+                        '0%': { opacity: 0, transform: 'translateY(20px)' },
+                        '100%': { opacity: 1, transform: 'translateY(0)' },
+                    },
+                    scaleUp: {
+                        '0%': { transform: 'scale(0.95)' },
+                        '100%': { transform: 'scale(1)' },
+                    }
+                },
+                animation: {
+                    'fade-in': 'fadeIn 0.8s cubic-bezier(.4,0,.2,1) both',
+                    'scale-up': 'scaleUp 0.3s cubic-bezier(.4,0,.2,1) both',
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body { font-family: 'Montserrat', 'Inter', sans-serif; }
+    .neon-border { box-shadow: 0 0 0 2px #7f5af0, 0 4px 24px 0 rgba(127,90,240,0.25); }
+    .card-animate { animation: fadeIn 0.8s cubic-bezier(.4,0,.2,1) both; }
+    .btn-ripple { position: relative; overflow: hidden; }
+    .btn-ripple:after { content: ''; display: block; position: absolute; border-radius: 50%; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; background: rgba(127,90,240,0.15); opacity: 0; transition: opacity 0.4s; }
+    .btn-ripple:active:after { opacity: 1; transition: 0s; }
+    /* Enhanced text visibility */
+    .text-attractive {
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 0 8px #7f5af0, 0 0 2px #ff5470;
+        letter-spacing: 0.5px;
+    }
+</style>
+<title>ResumeMatch AI Dashboard</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="relative flex min-h-screen w-full flex-col bg-background-dark text-foreground-dark">
+    <header class="sticky top-0 z-10 flex items-center justify-between whitespace-nowrap border-b border-border-dark bg-background-dark/90 px-10 py-4 backdrop-blur-sm shadow-neon">
+        <div class="flex items-center gap-4">
+            <div class="size-8 text-primary animate-pulse">
+                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6_319_new)"><path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path></g><defs><clipPath id="clip0_6_319_new"><rect fill="white" height="48" width="48"></rect></clipPath></defs></svg>
+            </div>
+            <h2 class="text-2xl font-extrabold tracking-tight text-primary drop-shadow-lg animate-fade-in">ResumeMatch AI</h2>
+        </div>
+        <div class="flex items-center gap-8">
+            <nav class="hidden md:flex items-center gap-8 text-base font-semibold">
+                <a href="{{ url_for('dashboard') }}" class="text-subtle-dark hover:text-primary transition-colors">Dashboard</a>
+                <a href="{{ url_for('jobs_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Jobs</a>
+                <a href="{{ url_for('resumes_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Resumes</a>
+                <a href="{{ url_for('letters_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Cover Letters</a>
+            </nav>
+        </div>
+    </header>
+<main class="flex-1 px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-7xl">
+    <div class="mb-8 animate-fade-in">
+        <h1 class="text-4xl font-extrabold tracking-tight text-primary mb-2">Automated Resume Relevance Check System</h1>
+        <p class="mt-1 text-lg text-subtle-dark">AI-powered resume evaluation with relevance scoring (0-100) and automated shortlisting at 65% threshold.</p>
+    </div>
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+        <div class="card-animate neon-border bg-card-dark rounded-2xl shadow-neon border border-border-dark">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0"><span class="material-symbols-outlined text-4xl text-primary">work</span></div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="truncate text-base font-semibold text-attractive">Job Roles Available</dt>
+                            <dd class="text-3xl font-extrabold text-attractive">{{ total_jobs }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-animate neon-border bg-card-dark rounded-2xl shadow-neon border border-border-dark">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0"><span class="material-symbols-outlined text-3xl text-primary/80">analytics</span></div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="truncate text-sm font-medium text-attractive">Resumes Evaluated</dt>
+                            <dd class="text-2xl font-bold text-attractive">{{ total_apps }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-animate neon-border bg-card-dark rounded-2xl shadow-neon border border-border-dark">
+            <div class="p-6">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0"><span class="material-symbols-outlined text-3xl text-primary/80">verified</span></div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="truncate text-sm font-medium text-attractive">Shortlisting Threshold</dt>
+                            <dd class="text-2xl font-bold text-attractive">≥65%</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<h2 class="mt-12 text-2xl font-bold tracking-tight">Resume Relevance Analysis Summary</h2>
+<p class="text-subtle-dark mt-2 mb-6">Click on any job card below to view shortlisted candidates (≥65% relevance score)</p>
+<div class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {% for job in jobs_summary %}
+    <div class="card-animate neon-border bg-card-dark rounded-2xl shadow-neon border border-border-dark cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1" data-job-id="{{ job.id }}" data-job-title="{{ job.title|e }}" onclick="handleJobCardClick(this)">
+                <div class="flex-shrink-0">
+                        <div class="h-48 w-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-6xl font-extrabold text-white">{{ job.title[0] }}</div>
+                </div>
+                <div class="flex flex-1 flex-col justify-between p-6">
+                        <div class="flex-1">
+                                <p class="text-2xl font-bold text-primary mb-2 text-attractive">{{ job.title }}</p>
+                                <div class="mt-3 flex flex-row flex-wrap items-center gap-4 text-base w-full">
+    <span class="inline-flex items-center rounded bg-green-900/50 px-3 py-1 font-bold text-green-300">≥65%: {{ job.shortlisted_count }}</span>
+    <span class="inline-flex items-center rounded bg-red-900/50 px-3 py-1 font-bold text-red-300"><65%: {{ job.rejected_count }}</span>
+    <span class="inline-flex items-center rounded bg-accent/20 px-3 py-1 font-bold text-accent">Total: {{ job.total_applicants }}</span>
+    <span class="inline-flex items-center rounded bg-primary/40 px-3 py-1 font-bold" style="color:#ff5470;text-shadow:0 0 8px #ff5470,0 0 2px #fff;">Avg Score: {{ job.avg_score }}%</span>
+</div>
+                        </div>
+                </div>
+        </div>
+        {% endfor %}
+
+        {% if not jobs_summary %}
+                <p class="text-gray-500 dark:text-gray-400 col-span-full">No jobs have been posted yet. Go to the 'Jobs' page to add one.</p>
+        {% endif %}
+</div>
+
+<!-- Modal for candidates -->
+<div id="candidates-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+    <div class="bg-card-dark neon-border rounded-2xl shadow-neon p-8 max-w-6xl w-full animate-fade-in max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 id="modal-title" class="text-2xl font-bold text-primary"></h2>
+            <button onclick="closeCandidatesModal()" class="text-accent text-2xl font-bold">&times;</button>
+        </div>
+        <div id="modal-content">
+            <div class="text-center text-subtle-dark">Loading candidates...</div>
+        </div>
+    </div>
+</div>
+<script>
+function handleJobCardClick(el) {
+    const jobId = el.getAttribute('data-job-id');
+    const jobTitle = el.getAttribute('data-job-title');
+    showCandidatesModal(jobId, jobTitle);
+}
+
+function showCandidatesModal(jobId, jobTitle) {
+    document.getElementById('candidates-modal').style.display = '';
+    document.getElementById('modal-title').textContent = '💼 ' + jobTitle + ' - Complete Details';
+    const modalContent = document.getElementById('modal-content');
+    modalContent.innerHTML = '<div class="text-center text-subtle-dark">Loading job details and candidates...</div>';
+    
+    // First fetch job details
+    Promise.all([
+        fetch('/api/jobs').then(res => res.json()),
+        fetch(`/api/results/${jobId}`).then(res => res.json())
+    ])
+        .then(([jobs, candidates]) => {
+            // Find the current job details
+            const currentJob = jobs.find(job => job.id == jobId);
+            
+            if (!currentJob) {
+                modalContent.innerHTML = '<div class="text-center text-red-400">Job details not found.</div>';
+                return;
+            }
+            
+            // Filter to show only shortlisted candidates (score >= 65%)
+            const shortlistedCandidates = candidates.filter(c => {
+                const score = c.analysis ? c.analysis.score : 0;
+                return score >= 65;
+            });
+            
+            // Calculate statistics
+            const totalCandidates = candidates.length;
+            const averageScore = candidates.length > 0 ? 
+                Math.round(candidates.reduce((sum, c) => sum + (c.analysis?.score || 0), 0) / candidates.length) : 0;
+            const belowThreshold = totalCandidates - shortlistedCandidates.length;
+            
+            modalContent.innerHTML = `
+                <!-- Job Information Section -->
+                <div class="mb-6 p-6 bg-card-dark rounded-xl border border-border-dark">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-primary mb-2">${currentJob.title}</h3>
+                            <p class="text-lg text-accent font-semibold">${currentJob.company}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-medium">
+                                Job ID: ${currentJob.id}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="text-sm font-semibold text-primary mb-2">📋 Job Description:</h4>
+                        <div class="bg-background-dark p-4 rounded-lg border border-border-dark max-h-40 overflow-y-auto">
+                            <p class="text-sm text-gray-300 whitespace-pre-wrap">${currentJob.description}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Statistics Row -->
+                    <div class="grid grid-cols-4 gap-4 pt-4 border-t border-border-dark">
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-green-400">${shortlistedCandidates.length}</div>
+                            <div class="text-xs text-green-300">Shortlisted (≥65%)</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-red-400">${belowThreshold}</div>
+                            <div class="text-xs text-red-300">Below Threshold</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-accent">${totalCandidates}</div>
+                            <div class="text-xs text-gray-400">Total Evaluated</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold text-primary">${averageScore}%</div>
+                            <div class="text-xs text-gray-400">Average Score</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Shortlisted Candidates Section -->
+                <div>
+                    <div class="mb-4 p-3 bg-green-900/20 rounded-lg border border-green-700">
+                        <div class="flex items-center justify-between">
+                            <span class="text-green-300 font-semibold">🎯 Shortlisted Candidates (≥65% Relevance Score)</span>
+                            <span class="text-green-200 text-sm">${shortlistedCandidates.length} qualified candidates</span>
+                        </div>
+                    </div>
+                    
+                    ${shortlistedCandidates.length === 0 ? `
+                        <div class="text-center py-8 text-subtle-dark">
+                            <span class="material-symbols-outlined text-4xl mb-4 opacity-50">person_off</span>
+                            <h4 class="text-lg font-semibold mb-2">No Shortlisted Candidates</h4>
+                            <p class="text-sm">No candidates have achieved the 65% relevance score threshold for this position.</p>
+                            <p class="text-xs mt-2 text-gray-500">Total candidates evaluated: ${totalCandidates}</p>
+                        </div>
+                    ` : `
+                        <div class="space-y-4 max-h-96 overflow-y-auto">
+                            ${shortlistedCandidates.map(c => {
+                                const score = c.analysis.score;
+                                const missingSkills = c.analysis.missing_skills ? JSON.parse(c.analysis.missing_skills || '[]') : [];
+                                
+                                return `
+                                    <div class="p-4 rounded-xl bg-green-900/30 text-green-100 border border-green-600 shadow-neon">
+                                        <div class="flex justify-between items-start mb-3">
+                                            <div>
+                                                <h4 class="font-bold text-lg text-green-200">${c.name}</h4>
+                                                <p class="text-xs text-green-300 mt-1">📄 Resume: ${c.resume_filename}</p>
+                                                ${c.email ? `<p class="text-xs text-green-300 mt-1">📧 Email: ${c.email}</p>` : '<p class="text-xs text-orange-300 mt-1">⚠️ No email address</p>'}
+                                            </div>
+                                            <div class="text-right">
+                                                <span class="inline-block px-3 py-1 bg-green-700 text-green-100 rounded-full text-sm font-bold mb-1">
+                                                    ${score}/100 ✓
+                                                </span>
+                                                <br>
+                                                <span class="text-xs px-2 py-1 bg-blue-800/50 text-blue-200 rounded-md">${c.analysis.verdict} Fit</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="border-t border-green-700 pt-3 mt-3">
+                                            <div class="mb-3">
+                                                <h5 class="text-sm font-semibold text-green-200 mb-1">📝 Analysis Summary:</h5>
+                                                <p class="text-xs text-green-100">${c.analysis.summary}</p>
+                                            </div>
+                                            
+                                            ${c.analysis.feedback ? `
+                                                <div class="mb-3">
+                                                    <h5 class="text-sm font-semibold text-blue-200 mb-1">💡 Improvement Feedback:</h5>
+                                                    <p class="text-xs text-blue-100">${c.analysis.feedback}</p>
+                                                </div>
+                                            ` : ''}
+                                            
+                                            ${missingSkills.length > 0 ? `
+                                                <div class="mb-3">
+                                                    <h5 class="text-sm font-semibold text-orange-200 mb-2">🔍 Skills Gap Analysis:</h5>
+                                                    <div class="flex flex-wrap gap-1">
+                                                        ${missingSkills.map(skill => 
+                                                            `<span class="px-2 py-1 bg-orange-800/50 text-orange-200 text-xs rounded-md">${skill}</span>`
+                                                        ).join('')}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                            
+                                            <div class="flex justify-between items-center pt-2 border-t border-green-700">
+                                                <span class="text-xs text-green-300">Qualified for next round</span>
+                                                <button onclick="sendCongratulationEmail('${c.name}', '${c.email || ''}')"
+                                                        class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-md transition-colors ${
+                                                            !c.email ? 'opacity-50 cursor-not-allowed' : ''
+                                                        }" 
+                                                        ${!c.email ? 'disabled' : ''}>
+                                                    🎉 Send Congratulations
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="mt-6 pt-4 border-t border-border-dark flex justify-between items-center">
+                            <div class="text-sm text-subtle-dark">
+                                💼 Ready to proceed with ${shortlistedCandidates.length} qualified candidates
+                            </div>
+                            <div class="space-x-2">
+                                <button onclick="window.open('/letters', '_blank')" 
+                                        class="px-4 py-2 bg-primary hover:bg-primary/80 text-white text-sm rounded-md transition-colors">
+                                    📧 Manage All Emails
+                                </button>
+                                <button onclick="window.open('/resumes?job_id=${jobId}', '_blank')" 
+                                        class="px-4 py-2 bg-accent hover:bg-accent/80 text-white text-sm rounded-md transition-colors">
+                                    📊 View Analysis Details
+                                </button>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            `;
+        })
+        .catch(error => {
+            console.error('Error loading job details:', error);
+            modalContent.innerHTML = `
+                <div class="text-center py-8 text-red-400">
+                    <span class="material-symbols-outlined text-4xl mb-4">error</span>
+                    <h4 class="text-lg font-semibold mb-2">Error Loading Details</h4>
+                    <p class="text-sm mb-4">Failed to load job details and candidates. Please try again.</p>
+                    <button onclick="showCandidatesModal(${jobId}, '${jobTitle}')" 
+                            class="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-md transition-colors">
+                        🔄 Retry
+                    </button>
+                </div>
+            `;
+        });
+}
+function closeCandidatesModal() {
+    document.getElementById('candidates-modal').style.display = 'none';
+}
+
+// Send congratulation email to individual candidate
+function sendCongratulationEmail(candidateName, candidateEmail) {
+    if (!candidateEmail) {
+        alert('No email address available for ' + candidateName + '. Please add email address in the Cover Letter page.');
+        return;
+    }
+    
+    if (confirm('Send congratulation email to ' + candidateName + ' (' + candidateEmail + ')?')) {
+        // You can implement the email sending functionality here
+        // For now, we'll show a success message
+        alert('🎉 Congratulation email sent to ' + candidateName + '!\n\nThis feature can be connected to your email service.');
+        
+        // In a real implementation, you would make an API call here:
+        /*
+        fetch('/api/send-individual-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                candidateName: candidateName,
+                candidateEmail: candidateEmail
+            })
+        }).then(response => {
+            if (response.ok) {
+                alert('🎉 Congratulation email sent successfully!');
+            } else {
+                alert('❌ Failed to send email. Please try again.');
+            }
+        });
+        */
+    }
+}
+</script>
+</main>
+</body>
+</html>

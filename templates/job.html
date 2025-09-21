@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResumeMatch AI - Job Description Management</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#7f5af0", // neon purple
+                    "accent": "#ff5470", // coral
+                    "background-dark": "#18181b",
+                    "card-dark": "#23232b",
+                    "foreground-dark": "#f9fafb",
+                    "subtle-dark": "#9ca3af",
+                    "border-dark": "#2a2a32"
+                },
+                fontFamily: { "display": ["Montserrat", "Inter", "sans-serif"] },
+                boxShadow: {
+                    'neon': '0 4px 24px 0 rgba(127,90,240,0.25)',
+                },
+                keyframes: {
+                    fadeIn: {
+                        '0%': { opacity: 0, transform: 'translateY(20px)' },
+                        '100%': { opacity: 1, transform: 'translateY(0)' },
+                    },
+                    scaleUp: {
+                        '0%': { transform: 'scale(0.95)' },
+                        '100%': { transform: 'scale(1)' },
+                    }
+                },
+                animation: {
+                    'fade-in': 'fadeIn 0.8s cubic-bezier(.4,0,.2,1) both',
+                    'scale-up': 'scaleUp 0.3s cubic-bezier(.4,0,.2,1) both',
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body { font-family: 'Montserrat', 'Inter', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
+    .neon-border { box-shadow: 0 0 0 2px #7f5af0, 0 4px 24px 0 rgba(127,90,240,0.25); }
+    .card-animate { animation: fadeIn 0.8s cubic-bezier(.4,0,.2,1) both; }
+    .btn-ripple { position: relative; overflow: hidden; }
+    .btn-ripple:after { content: ''; display: block; position: absolute; border-radius: 50%; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; background: rgba(127,90,240,0.15); opacity: 0; transition: opacity 0.4s; }
+    .btn-ripple:active:after { opacity: 1; transition: 0s; }
+</style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark">
+<div class="flex flex-col min-h-screen bg-background-dark text-foreground-dark">
+    <header class="sticky top-0 z-10 bg-background-dark/90 backdrop-blur-sm border-b border-border-dark shadow-neon">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-4">
+                    <svg class="h-8 w-8 text-primary animate-pulse" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6_319_new)"><path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path></g><defs><clipPath id="clip0_6_319_new"><rect fill="white" height="48" width="48"></rect></clipPath></defs></svg>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-primary drop-shadow-lg animate-fade-in">ResumeMatch AI</h1>
+                </div>
+                <nav class="hidden md:flex items-center gap-8 text-base font-semibold">
+                    <a href="{{ url_for('dashboard') }}" class="text-subtle-dark hover:text-primary transition-colors">Dashboard</a>
+                    <a href="{{ url_for('jobs_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Jobs</a>
+                    <a href="{{ url_for('resumes_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Resumes</a>
+                    <a href="{{ url_for('letters_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Cover Letters</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+<div class="mb-8 animate-fade-in">
+    <h2 class="text-4xl font-extrabold tracking-tight text-primary mb-2">Job Description Management</h2>
+    <p class="text-lg text-subtle-dark">Create and manage job descriptions for resume analysis.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Add New Job Section -->
+    <div class="card-animate">
+        <div class="neon-border bg-card-dark p-8 rounded-2xl border border-border-dark shadow-neon">
+            <h3 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                <span class="material-symbols-outlined mr-2">add_circle</span>
+                Add New Job
+            </h3>
+            <form id="job-form" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2" for="job-upload">Upload Job Description (Optional)</label>
+                    <div id="dropzone" class="flex flex-col items-center justify-center border-2 border-dashed border-primary rounded-xl bg-background-dark py-6 cursor-pointer transition-all hover:border-accent hover:bg-background-dark/80 relative">
+                        <span class="material-symbols-outlined text-3xl text-primary mb-2">upload_file</span>
+                        <span class="text-sm font-bold text-primary mb-1">Upload JD File</span>
+                        <span class="text-xs text-subtle-dark">PDF or DOCX (Optional)</span>
+                        <input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="file-upload" name="file-upload" type="file" accept=".pdf,.docx" />
+                    </div>
+                    <p id="file-name-display" class="text-xs mt-2 text-accent font-bold text-center"></p>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" for="job-title">Job Title *</label>
+                    <input class="form-input w-full bg-background-dark text-foreground-dark border-primary rounded-xl" id="job-title" name="job-title" type="text" placeholder="e.g., Senior Software Engineer" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" for="company-name">Company Name *</label>
+                    <input class="form-input w-full bg-background-dark text-foreground-dark border-primary rounded-xl" id="company-name" name="company-name" type="text" placeholder="e.g., Tech Corp" required />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" for="job-description">Job Description *</label>
+                    <textarea class="form-textarea w-full bg-background-dark text-foreground-dark border-primary rounded-xl" id="job-description" name="job-description" rows="6" placeholder="Enter detailed job description, requirements, and responsibilities..." required></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button class="bg-primary btn-ripple text-white font-bold py-3 px-6 rounded-xl hover:bg-accent transition-all flex items-center gap-2 shadow-neon scale-95 hover:scale-100" type="submit">
+                        <span class="material-symbols-outlined text-base">add</span> Create Job
+                    </button>
+                </div>
+            </form>
+            <div id="form-status" class="mt-4 text-sm text-center"></div>
+        </div>
+    </div>
+
+    <!-- Existing Jobs Section -->
+    <div class="card-animate">
+        <div class="neon-border bg-card-dark p-8 rounded-2xl border border-border-dark shadow-neon">
+            <h3 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                <span class="material-symbols-outlined mr-2">work</span>
+                Existing Jobs
+            </h3>
+            <div id="jobs-loading" class="text-center py-4 hidden">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-2"></div>
+                <p class="text-subtle-dark text-sm">Loading jobs...</p>
+            </div>
+            <div id="jobs-list" class="space-y-4 max-h-96 overflow-y-auto">
+                <!-- Jobs will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-8 text-center">
+    <div class="bg-card-dark/50 rounded-xl p-6 border border-border-dark">
+        <p class="text-subtle-dark mb-4">Ready to analyze resumes for your jobs?</p>
+        <a href="{{ url_for('resumes_page') }}" class="inline-flex items-center gap-2 bg-accent hover:bg-accent/80 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-neon">
+            <span class="material-symbols-outlined">upload</span>
+            Go to Resume Analysis
+        </a>
+    </div>
+</div>
+</main>
+</div>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const jobForm = document.getElementById('job-form');
+            const fileInput = document.getElementById('file-upload');
+            const fileNameDisplay = document.getElementById('file-name-display');
+            const formStatus = document.getElementById('form-status');
+            const jobsList = document.getElementById('jobs-list');
+            const jobsLoading = document.getElementById('jobs-loading');
+
+            // Load existing jobs on page load
+            loadJobs();
+
+            // Handle job creation
+            jobForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const formData = new FormData(jobForm);
+                const descriptionText = formData.get('job-description');
+                const uploadedFile = formData.get('file-upload');
+                
+                if (!descriptionText && (!uploadedFile || uploadedFile.size === 0)) {
+                    showFormStatus('Please provide a job description either by uploading a file or entering text.', 'error');
+                    return;
+                }
+                
+                showFormStatus('Creating job...', 'loading');
+                
+                try {
+                    const response = await fetch('/api/jobs', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to create job.');
+                    }
+                    
+                    const job = await response.json();
+                    jobForm.reset();
+                    fileNameDisplay.textContent = '';
+                    
+                    showFormStatus('✅ Job created successfully!', 'success');
+                    
+                    // Refresh the jobs list
+                    loadJobs();
+                    
+                } catch (error) {
+                    showFormStatus(`❌ Error: ${error.message}`, 'error');
+                }
+            });
+
+            // Display the selected file name
+            fileInput.addEventListener('change', () => {
+                fileNameDisplay.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : '';
+            });
+
+            // Show form status messages
+            function showFormStatus(message, type) {
+                formStatus.textContent = message;
+                formStatus.className = `mt-4 text-sm text-center ${
+                    type === 'success' ? 'text-green-400' :
+                    type === 'error' ? 'text-red-400' :
+                    type === 'loading' ? 'text-yellow-400' :
+                    'text-gray-400'
+                }`;
+                
+                if (type === 'success') {
+                    setTimeout(() => {
+                        formStatus.textContent = '';
+                    }, 3000);
+                }
+            }
+
+            // Load and display existing jobs
+            async function loadJobs() {
+                jobsLoading.classList.remove('hidden');
+                jobsList.innerHTML = '';
+                
+                try {
+                    const response = await fetch('/api/jobs');
+                    if (!response.ok) throw new Error('Failed to load jobs');
+                    
+                    const jobs = await response.json();
+                    jobsLoading.classList.add('hidden');
+                    
+                    if (jobs.length === 0) {
+                        jobsList.innerHTML = `
+                            <div class="text-center py-8 text-subtle-dark">
+                                <span class="material-symbols-outlined text-4xl mb-2 opacity-50">work_off</span>
+                                <p>No jobs created yet.</p>
+                                <p class="text-sm mt-1">Create your first job to get started!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    jobs.forEach(job => {
+                        const jobCard = document.createElement('div');
+                        jobCard.className = 'bg-background-dark rounded-lg p-4 border border-border-dark hover:border-primary/50 transition-colors';
+                        
+                        jobCard.innerHTML = `
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-semibold text-primary text-lg">${job.title}</h4>
+                                <span class="text-xs text-subtle-dark bg-primary/20 px-2 py-1 rounded-full">ID: ${job.id}</span>
+                            </div>
+                            <p class="text-accent font-medium mb-2">${job.company}</p>
+                            <p class="text-gray-300 text-sm line-clamp-3">${job.description.substring(0, 150)}${job.description.length > 150 ? '...' : ''}</p>
+                            <div class="mt-3 pt-3 border-t border-border-dark flex justify-between items-center">
+                                <button onclick="showJobDetails(${job.id})" class="text-primary hover:text-primary/80 text-sm font-medium">
+                                    View Details
+                                </button>
+                                <a href="/resumes?job_id=${job.id}" class="bg-primary/20 hover:bg-primary/30 text-primary px-3 py-1 rounded-md text-sm transition-colors">
+                                    Analyze Resumes
+                                </a>
+                            </div>
+                        `;
+                        
+                        jobsList.appendChild(jobCard);
+                    });
+                    
+                } catch (error) {
+                    jobsLoading.classList.add('hidden');
+                    jobsList.innerHTML = `
+                        <div class="text-center py-8 text-red-400">
+                            <span class="material-symbols-outlined text-4xl mb-2">error</span>
+                            <p>Failed to load jobs</p>
+                            <button onclick="loadJobs()" class="mt-2 text-primary hover:text-primary/80 underline">Retry</button>
+                        </div>
+                    `;
+                }
+            }
+
+            // Make loadJobs available globally for retry button
+            window.loadJobs = loadJobs;
+        });
+
+        // Show job details in alert (can be enhanced with a modal later)
+        function showJobDetails(jobId) {
+            fetch(`/api/jobs`)
+                .then(response => response.json())
+                .then(jobs => {
+                    const job = jobs.find(j => j.id === jobId);
+                    if (job) {
+                        alert(`Job Title: ${job.title}\n\nCompany: ${job.company}\n\nDescription:\n${job.description}`);
+                    }
+                })
+                .catch(error => {
+                    alert('Failed to load job details');
+                });
+        }
+</script>
+
+</body></html>

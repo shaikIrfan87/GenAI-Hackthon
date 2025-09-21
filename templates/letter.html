@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cover Letter & Shortlisted Candidates - ResumeMatch AI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Montserrat:wght@700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#7f5af0", // neon purple
+                    "accent": "#ff5470", // coral
+                    "background-dark": "#18181b",
+                    "card-dark": "#23232b",
+                    "foreground-dark": "#f9fafb",
+                    "subtle-dark": "#9ca3af",
+                    "border-dark": "#2a2a32"
+                },
+                fontFamily: { "display": ["Montserrat", "Inter", "sans-serif"] },
+                boxShadow: {
+                    'neon': '0 4px 24px 0 rgba(127,90,240,0.25)',
+                },
+                keyframes: {
+                    fadeIn: {
+                        '0%': { opacity: 0, transform: 'translateY(20px)' },
+                        '100%': { opacity: 1, transform: 'translateY(0)' },
+                    },
+                    scaleUp: {
+                        '0%': { transform: 'scale(0.95)' },
+                        '100%': { transform: 'scale(1)' },
+                    }
+                },
+                animation: {
+                    'fade-in': 'fadeIn 0.8s cubic-bezier(.4,0,.2,1) both',
+                    'scale-up': 'scaleUp 0.3s cubic-bezier(.4,0,.2,1) both',
+                }
+            },
+        },
+    }
+</script>
+<style>
+    body { font-family: 'Montserrat', 'Inter', sans-serif; }
+    .text-attractive {
+        color: #fff;
+        font-weight: 700;
+        text-shadow: 0 0 8px #7f5af0, 0 0 2px #ff5470;
+        letter-spacing: 0.5px;
+    }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24 }
+    .neon-border { box-shadow: 0 0 0 2px #7f5af0, 0 4px 24px 0 rgba(127,90,240,0.25); }
+    .card-animate { animation: fadeIn 0.8s cubic-bezier(.4,0,.2,1) both; }
+    .btn-ripple { position: relative; overflow: hidden; }
+    .btn-ripple:after { content: ''; display: block; position: absolute; border-radius: 50%; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; background: rgba(127,90,240,0.15); opacity: 0; transition: opacity 0.4s; }
+    .btn-ripple:active:after { opacity: 1; transition: 0s; }
+    .tab-button { transition: all 0.3s ease; }
+    .tab-button.active { background: #7f5af0; color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #7f5af0; border-radius: 50%; animation: spin 2s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-800 dark:text-gray-200">
+<div class="flex flex-col min-h-screen bg-background-dark text-foreground-dark">
+    <header class="bg-background-dark/90 backdrop-blur-sm sticky top-0 z-10 border-b border-border-dark shadow-neon">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-4">
+                    <div class="text-primary animate-pulse">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_6_319_new)">
+                                <path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"></path>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_6_319_new"><rect fill="white" height="48" width="48"></rect></clipPath>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-primary drop-shadow-lg animate-fade-in">ResumeMatch AI</h1>
+                </div>
+                <nav class="hidden md:flex items-center gap-8 text-base font-semibold">
+                    <a href="{{ url_for('dashboard') }}" class="text-subtle-dark hover:text-primary transition-colors">Dashboard</a>
+                    <a href="{{ url_for('jobs_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Jobs</a>
+                    <a href="{{ url_for('resumes_page') }}" class="text-subtle-dark hover:text-primary transition-colors">Resumes</a>
+                    <a href="{{ url_for('letters_page') }}" class="text-primary border-b-2 border-primary">Cover Letters</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAUnTsDZyH00jTJF3hv-Et0QFHhEELdTMPdfsp9HLhY_TCMS-fqCdHVFAuEjSWRjdN-CRoOBWWHgGyEZgM7gc2FVp6vDV_oAlYwB5838G1rHv0lzraLDzmGTLgDMydovs_y6lUhkF204mp3nxL331dqSEU4NKwsUeEiJxq9k0bW_MA0yB-195ITdSeS3PdAtJzAOhwcFQrl08YI17ltL6fOxCI7eSm-iY8bZ08u1LP1vTERHxwCfS_Qlks4Qwpd5W3OEhtrfFJL4fM");'></div>
+                    <button class="md:hidden text-gray-600 dark:text-gray-300">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+<main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white text-attractive">Cover Letter & Shortlisted Candidates</h2>
+            <p class="mt-2 text-gray-500 dark:text-gray-400 text-attractive">Analyze resumes and manage shortlisted candidates.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="mb-8">
+            <div class="flex space-x-1 bg-card-dark rounded-lg p-1 neon-border">
+                <button onclick="showTab('cover-letter')" id="tab-cover-letter" class="tab-button flex-1 py-3 px-6 rounded-md text-sm font-medium transition-all duration-200 active">
+                    <span class="material-symbols-outlined mr-2">description</span>
+                    Cover Letter Analysis
+                </button>
+                <button onclick="showTab('shortlisted')" id="tab-shortlisted" class="tab-button flex-1 py-3 px-6 rounded-md text-sm font-medium transition-all duration-200 text-subtle-dark hover:text-white">
+                    <span class="material-symbols-outlined mr-2">group</span>
+                    Shortlisted Candidates
+                </button>
+            </div>
+        </div>
+
+        <!-- Cover Letter Analysis Tab -->
+        <div id="content-cover-letter" class="tab-content active">
+            {% if error %}
+            <div class="mb-6 p-4 bg-red-900/50 border border-red-500 rounded-lg text-red-200">
+                <strong>Error:</strong> {{ error }}
+            </div>
+            {% endif %}
+
+            <form method="POST" class="bg-card-dark neon-border rounded-2xl shadow-neon p-6 space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-attractive" for="job_description">Job Description</label>
+                    <textarea class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-background-dark focus:ring-primary focus:border-primary text-gray-100 placeholder-gray-400" id="job_description" name="job_description" placeholder="Paste the job description here..." rows="5" required>{{ request.form.job_description or '' }}</textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-attractive" for="resume_text">Resume Text</label>
+                    <textarea class="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-background-dark focus:ring-primary focus:border-primary text-gray-100 placeholder-gray-400" id="resume_text" name="resume_text" placeholder="Paste your resume text here..." rows="8" required>{{ request.form.resume_text or '' }}</textarea>
+                </div>
+                <div class="flex justify-end items-center gap-4 pt-4">
+                    <button type="submit" class="px-6 py-3 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background-dark focus:ring-primary btn-ripple">
+                        <span class="material-symbols-outlined mr-2">psychology</span>
+                        Analyze Cover Letter
+                    </button>
+                </div>
+            </form>
+
+            {% if result %}
+            <div class="mt-8 bg-card-dark neon-border rounded-2xl shadow-neon p-6 card-animate">
+                <h3 class="text-2xl font-bold text-primary mb-4 flex items-center">
+                    <span class="material-symbols-outlined mr-2">analytics</span>
+                    AI Analysis Result
+                </h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="p-4 bg-background-dark rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-subtle-dark">Relevance Score</span>
+                                <span class="text-2xl font-bold text-primary">{{ result.relevance_score }}/100</span>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-background-dark rounded-lg">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-subtle-dark">Fit Verdict</span>
+                                <span class="px-3 py-1 rounded-full text-sm font-medium 
+                                    {% if result.fit_verdict.lower() == 'high' %}
+                                        bg-green-900/50 text-green-300
+                                    {% elif result.fit_verdict.lower() == 'medium' %}
+                                        bg-yellow-900/50 text-yellow-300
+                                    {% else %}
+                                        bg-red-900/50 text-red-300
+                                    {% endif %}">
+                                    {{ result.fit_verdict }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-background-dark rounded-lg">
+                            <h4 class="text-sm font-medium text-subtle-dark mb-2">Summary</h4>
+                            <p class="text-gray-300 text-sm">{{ result.summary }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="p-4 bg-background-dark rounded-lg">
+                        <h4 class="text-sm font-medium text-subtle-dark mb-3">Personalized Feedback</h4>
+                        <p class="text-gray-300 text-sm">{{ result.personalized_feedback }}</p>
+                    </div>
+                    <div class="p-4 bg-background-dark rounded-lg">
+                        <h4 class="text-sm font-medium text-subtle-dark mb-3">Missing Skills</h4>
+                        <div class="flex flex-wrap gap-2">
+                            {% for skill in result.missing_skills %}
+                            <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded-full">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Shortlisted Candidates Tab -->
+        <div id="content-shortlisted" class="tab-content">
+            <div class="bg-card-dark neon-border rounded-2xl shadow-neon p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-primary flex items-center">
+                        <span class="material-symbols-outlined mr-2">star</span>
+                        Shortlisted Candidates
+                    </h3>
+                    <div class="flex gap-4">
+                        <button onclick="testEmailConfiguration()" class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors btn-ripple">
+                            <span class="material-symbols-outlined mr-1">settings</span>
+                            Test Email
+                        </button>
+                        <button onclick="refreshCandidates()" class="px-4 py-2 bg-subtle-dark/20 hover:bg-subtle-dark/30 text-subtle-dark hover:text-white rounded-lg transition-colors btn-ripple">
+                            <span class="material-symbols-outlined mr-1">refresh</span>
+                            Refresh
+                        </button>
+                        <button onclick="sendEmailsToSelected()" id="send-emails-btn" class="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors btn-ripple disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <span class="material-symbols-outlined mr-1">mail</span>
+                            Send Emails
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="candidates-loading" class="text-center py-8 hidden">
+                    <div class="loading mx-auto mb-4"></div>
+                    <p class="text-subtle-dark">Loading shortlisted candidates...</p>
+                </div>
+                
+                <div id="candidates-list">
+                    <!-- Candidates will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+
+<!-- Email Modal -->
+<div id="email-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 hidden">
+    <div class="bg-card-dark neon-border rounded-2xl shadow-neon p-8 max-w-md w-full mx-4 animate-scale-up">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-bold text-primary">Sending Emails</h3>
+            <button onclick="closeEmailModal()" class="text-accent text-2xl font-bold">&times;</button>
+        </div>
+        <div id="email-modal-content">
+            <div class="text-center">
+                <div class="loading mx-auto mb-4"></div>
+                <p class="text-subtle-dark">Sending emails to selected candidates...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let shortlistedCandidates = [];
+let selectedCandidates = [];
+
+// Tab functionality
+function showTab(tabName) {
+    // Hide all tab contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+        button.classList.add('text-subtle-dark', 'hover:text-white');
+    });
+    
+    // Show selected tab content
+    document.getElementById('content-' + tabName).classList.add('active');
+    
+    // Add active class to selected tab button
+    const activeButton = document.getElementById('tab-' + tabName);
+    activeButton.classList.add('active');
+    activeButton.classList.remove('text-subtle-dark', 'hover:text-white');
+    
+    // Load candidates if shortlisted tab is selected
+    if (tabName === 'shortlisted') {
+        loadShortlistedCandidates();
+    }
+}
+
+// Load shortlisted candidates
+function loadShortlistedCandidates() {
+    const loadingDiv = document.getElementById('candidates-loading');
+    const candidatesList = document.getElementById('candidates-list');
+    
+    loadingDiv.classList.remove('hidden');
+    candidatesList.innerHTML = '';
+    
+    fetch('/api/shortlisted')
+        .then(response => response.json())
+        .then(data => {
+            loadingDiv.classList.add('hidden');
+            shortlistedCandidates = data;
+            displayCandidates(data);
+        })
+        .catch(error => {
+            console.error('Error loading candidates:', error);
+            loadingDiv.classList.add('hidden');
+            candidatesList.innerHTML = `
+                <div class="text-center py-8 text-red-400">
+                    <span class="material-symbols-outlined text-4xl mb-2">error</span>
+                    <p>Failed to load candidates. Please try again.</p>
+                    <button onclick="loadShortlistedCandidates()" class="mt-4 px-4 py-2 bg-primary rounded-lg hover:bg-primary/90 transition-colors">
+                        Retry
+                    </button>
+                </div>
+            `;
+        });
+}
+
+// Display candidates
+function displayCandidates(candidates) {
+    const candidatesList = document.getElementById('candidates-list');
+    
+    if (!candidates.length) {
+        candidatesList.innerHTML = `
+            <div class="text-center py-8 text-subtle-dark">
+                <span class="material-symbols-outlined text-4xl mb-2">person_off</span>
+                <p>No shortlisted candidates found.</p>
+                <p class="text-sm mt-2">Upload and analyze some resumes first.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const candidatesHtml = candidates.map(candidate => `
+        <div class="candidate-card p-4 bg-background-dark rounded-lg border border-border-dark hover:border-primary/50 transition-colors mb-4">
+            <div class="flex items-start justify-between">
+                <div class="flex items-start space-x-3">
+                    <input type="checkbox" 
+                           id="candidate-${candidate.id}" 
+                           class="candidate-checkbox mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" 
+                           value="${candidate.id}" 
+                           onchange="updateSelectedCandidates()">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <h4 class="font-semibold text-primary">${candidate.name}</h4>
+                            <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                                candidate.verdict.toLowerCase() === 'high' ? 'bg-green-900/50 text-green-300' :
+                                candidate.verdict.toLowerCase() === 'medium' ? 'bg-yellow-900/50 text-yellow-300' :
+                                'bg-red-900/50 text-red-300'
+                            }">
+                                ${candidate.verdict} (${candidate.score}/100)
+                            </span>
+                        </div>
+                        <div class="text-sm text-gray-300 space-y-1">
+                            <p><strong>Job:</strong> ${candidate.job_title} at ${candidate.company}</p>
+                            <div class="flex items-center space-x-2">
+                                <strong>Email:</strong>
+                                <input type="email" 
+                                       id="email-${candidate.id}" 
+                                       value="${candidate.email}" 
+                                       placeholder="Enter email address" 
+                                       class="bg-card-dark border border-gray-600 rounded px-2 py-1 text-sm text-gray-300 focus:ring-primary focus:border-primary flex-1 max-w-xs"
+                                       onchange="updateCandidateEmail(${candidate.id}, this.value)">
+                            </div>
+                            <p class="text-xs text-gray-400">Summary: ${candidate.summary.substring(0, 150)}...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    candidatesList.innerHTML = candidatesHtml;
+}
+
+// Update selected candidates
+function updateSelectedCandidates() {
+    const checkboxes = document.querySelectorAll('.candidate-checkbox:checked');
+    selectedCandidates = Array.from(checkboxes).map(cb => parseInt(cb.value));
+    
+    const sendButton = document.getElementById('send-emails-btn');
+    sendButton.disabled = selectedCandidates.length === 0;
+    sendButton.textContent = selectedCandidates.length > 0 ? 
+        `Send Emails (${selectedCandidates.length})` : 
+        'Send Emails';
+}
+
+// Update candidate email
+function updateCandidateEmail(candidateId, email) {
+    if (!email.trim()) return;
+    
+    fetch(`/api/candidate/${candidateId}/email`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert('Error updating email: ' + data.error);
+            // Reset the input to original value
+            const originalCandidate = shortlistedCandidates.find(c => c.id === candidateId);
+            if (originalCandidate) {
+                document.getElementById(`email-${candidateId}`).value = originalCandidate.email;
+            }
+        } else {
+            // Update local data
+            const candidate = shortlistedCandidates.find(c => c.id === candidateId);
+            if (candidate) {
+                candidate.email = email;
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error updating email:', error);
+        alert('Failed to update email. Please try again.');
+    });
+}
+
+// Send emails to selected candidates
+function sendEmailsToSelected() {
+    if (selectedCandidates.length === 0) {
+        alert('Please select at least one candidate.');
+        return;
+    }
+    
+    // Check if all selected candidates have email addresses
+    const candidatesWithoutEmail = selectedCandidates.filter(id => {
+        const emailInput = document.getElementById(`email-${id}`);
+        return !emailInput || !emailInput.value.trim();
+    });
+    
+    if (candidatesWithoutEmail.length > 0) {
+        alert('Please provide email addresses for all selected candidates.');
+        return;
+    }
+    
+    // Show modal
+    document.getElementById('email-modal').classList.remove('hidden');
+    
+    // Send emails
+    fetch('/api/send-emails', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ candidate_ids: selectedCandidates })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const modalContent = document.getElementById('email-modal-content');
+        
+        if (data.error) {
+            modalContent.innerHTML = `
+                <div class="text-center">
+                    <span class="material-symbols-outlined text-4xl text-red-400 mb-2">error</span>
+                    <h4 class="text-lg font-semibold text-red-400 mb-2">Error</h4>
+                    <p class="text-gray-300">${data.error}</p>
+                    <button onclick="closeEmailModal()" class="mt-4 px-4 py-2 bg-primary rounded-lg hover:bg-primary/90 transition-colors">Close</button>
+                </div>
+            `;
+        } else {
+            const successCount = data.results ? data.results.filter(r => r.status.success).length : 0;
+            const totalCount = data.results ? data.results.length : 0;
+            
+            modalContent.innerHTML = `
+                <div class="text-center">
+                    <span class="material-symbols-outlined text-4xl text-green-400 mb-2">check_circle</span>
+                    <h4 class="text-lg font-semibold text-green-400 mb-2">Success!</h4>
+                    <p class="text-gray-300 mb-4">${data.message}</p>
+                    ${data.results ? `
+                        <div class="text-left bg-background-dark rounded-lg p-4 mb-4 max-h-40 overflow-y-auto">
+                            ${data.results.map(r => `
+                                <div class="flex items-center justify-between py-1 text-sm">
+                                    <span>${r.candidate}</span>
+                                    <span class="${r.status.success ? 'text-green-400' : 'text-red-400'}">
+                                        ${r.status.success ? '✓' : '✗'}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    <button onclick="closeEmailModal(); refreshCandidatesAfterEmail()" class="px-4 py-2 bg-primary rounded-lg hover:bg-primary/90 transition-colors">Close</button>
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        console.error('Error sending emails:', error);
+        const modalContent = document.getElementById('email-modal-content');
+        modalContent.innerHTML = `
+            <div class="text-center">
+                <span class="material-symbols-outlined text-4xl text-red-400 mb-2">error</span>
+                <h4 class="text-lg font-semibold text-red-400 mb-2">Error</h4>
+                <p class="text-gray-300">Failed to send emails. Please try again.</p>
+                <button onclick="closeEmailModal()" class="mt-4 px-4 py-2 bg-primary rounded-lg hover:bg-primary/90 transition-colors">Close</button>
+            </div>
+        `;
+    });
+}
+
+// Close email modal
+function closeEmailModal() {
+    document.getElementById('email-modal').classList.add('hidden');
+}
+
+// Refresh candidates after sending emails
+function refreshCandidatesAfterEmail() {
+    // Clear selected candidates
+    selectedCandidates = [];
+    document.querySelectorAll('.candidate-checkbox').forEach(cb => cb.checked = false);
+    document.getElementById('send-emails-btn').disabled = true;
+    document.getElementById('send-emails-btn').textContent = 'Send Emails';
+    
+    // Reload candidates
+    loadShortlistedCandidates();
+}
+
+// Refresh candidates function
+function refreshCandidates() {
+    loadShortlistedCandidates();
+}
+
+// Test email configuration
+function testEmailConfiguration() {
+    const email = prompt('Enter your email address to test email configuration:');
+    if (!email) return;
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    
+    fetch('/api/test-email', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`✅ Success!\n\n${data.message}\n\nCheck your inbox for the test email.`);
+        } else {
+            let message = `❌ Email Test Failed\n\n${data.error}`;
+            if (data.instructions) {
+                message += `\n\n💡 Setup Instructions:\n${data.instructions}`;
+            }
+            alert(message);
+        }
+    })
+    .catch(error => {
+        console.error('Email test error:', error);
+        alert('❌ Failed to test email configuration. Check console for details.');
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default tab
+    showTab('cover-letter');
+});
+</script>
+
+</body></html>

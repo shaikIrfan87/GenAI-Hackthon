@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ResumeMatch AI - Get Started</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Montserrat:wght@700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#7f5af0", // neon purple
+          "accent": "#ff5470", // coral
+          "background-dark": "#18181b",
+          "card-dark": "#23232b",
+          "foreground-dark": "#f9fafb",
+          "subtle-dark": "#9ca3af",
+          "border-dark": "#2a2a32"
+        },
+        fontFamily: { "display": ["Montserrat", "Inter", "sans-serif"] },
+        boxShadow: {
+          'neon': '0 4px 24px 0 rgba(127,90,240,0.25)',
+        },
+        keyframes: {
+          fadeIn: {
+            '0%': { opacity: 0, transform: 'translateY(20px)' },
+            '100%': { opacity: 1, transform: 'translateY(0)' },
+          },
+          scaleUp: {
+            '0%': { transform: 'scale(0.95)' },
+            '100%': { transform: 'scale(1)' },
+          }
+        },
+        animation: {
+          'fade-in': 'fadeIn 0.8s cubic-bezier(.4,0,.2,1) both',
+          'scale-up': 'scaleUp 0.3s cubic-bezier(.4,0,.2,1) both',
+        }
+      },
+    },
+  }
+</script>
+<style>
+  body { font-family: 'Montserrat', 'Inter', sans-serif; }
+  .neon-border { box-shadow: 0 0 0 2px #7f5af0, 0 4px 24px 0 rgba(127,90,240,0.25); }
+  .card-animate { animation: fadeIn 0.8s cubic-bezier(.4,0,.2,1) both; }
+  .btn-ripple { position: relative; overflow: hidden; }
+  .btn-ripple:after { content: ''; display: block; position: absolute; border-radius: 50%; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; background: rgba(127,90,240,0.15); opacity: 0; transition: opacity 0.4s; }
+  .btn-ripple:active:after { opacity: 1; transition: 0s; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 font-display">
+<div class="flex flex-col min-h-screen bg-background-dark text-foreground-dark">
+  <header class="sticky top-0 z-10 bg-background-dark/90 backdrop-blur-sm border-b border-border-dark shadow-neon">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-4">
+          <svg class="h-8 w-8 text-primary animate-pulse" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6_319_new)"><path d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" fill="currentColor"></path></g><defs><clipPath id="clip0_6_319_new"><rect fill="white" height="48" width="48"></rect></clipPath></defs></svg>
+          <h1 class="text-2xl font-extrabold tracking-tight text-primary drop-shadow-lg animate-fade-in">ResumeMatch AI</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="flex-grow flex items-center justify-center">
+    <section class="py-16 sm:py-24 lg:py-32">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center card-animate">
+          <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-primary mb-4 animate-fade-in">Get Started with ResumeMatch AI</h1>
+          <p class="mt-4 max-w-2xl mx-auto text-xl text-subtle-dark">Streamline your recruitment workflow with our <span class="text-accent font-bold">AI-powered</span> platform. Sign up now to find the perfect candidates, faster.</p>
+          <div class="mt-8 flex justify-center">
+            <a href="{{ url_for('dashboard') }}" class="px-10 py-5 text-xl font-bold rounded-xl bg-primary btn-ripple text-white hover:bg-accent transition-transform transform hover:scale-105 shadow-neon">Start Your Free Trial</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+</body></html>
