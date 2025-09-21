@@ -1,5 +1,9 @@
 # ResumeMatch AI
+<<<<<<< HEAD
 
+=======
+#Automated Resume Relevance Check System
+>>>>>>> cb48aacac52bb6ca60b1c484f5b6ddf1494f0647
 ## 🚀 Overview
 ResumeMatch AI is an end-to-end, AI-powered recruitment automation platform designed for hackathons and real-world hiring. It streamlines the process of job posting, resume collection, AI-based resume-job matching, shortlisting, and automated candidate communication—all with a beautiful, modern UI.
 
