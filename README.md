@@ -1,6 +1,8 @@
 # ResumeMatch AI
-<<<<<<< HEAD
+#Automated Resume Relevance Check System
 
+
+<<<<<<< HEAD
 =======
 #Automated Resume Relevance Check System
 >>>>>>> cb48aacac52bb6ca60b1c484f5b6ddf1494f0647
